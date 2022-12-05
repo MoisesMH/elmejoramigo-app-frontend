@@ -1,0 +1,13 @@
+.CardList {
+    /* display: flex;
+    flex-wrap: wrap;
+    justify-content: center; */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(calc(18rem + 8vw),20rem), 1fr));
+}
+
+.CardList--wrapper {
+    display: flex;
+    justify-content: center;
+    margin: 1rem;
+}
