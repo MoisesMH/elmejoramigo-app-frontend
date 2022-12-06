@@ -3,7 +3,7 @@ import axios from "axios"
 
 export default function useAuthReducer(reducer, initAuthState) {
     // We start with a piece of state: { todos: initTodos }
-    const [user, dispatch] = useRegisteredUserReducer(reducer, initAuthState)
+    const [user, dispatch, isLoading, error] = useRegisteredUserReducer(reducer, initAuthState)
 
     const API_URL = "http://localhost:5000/users"
     const postConfig = {
@@ -83,6 +83,8 @@ export default function useAuthReducer(reducer, initAuthState) {
 
     return [
         user,
-        actions
+        actions,
+        isLoading,
+        error
     ]
 }

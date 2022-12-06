@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext } from "react";
 import useAuthReducer from "../hooks/useAuthReducer";
 import reducer from "../reducers/auth.reducer";
 
@@ -8,10 +8,30 @@ export const UserStateContext = createContext()
 export const UserActionsContext = createContext()
 export const UserAuthContext = createContext()
 
+export const useAuthState = () => {
+    const context = useContext(UserStateContext)
+    if(context === undefined) throw new Error("useAuthState must be used within an AuthProvider")
+
+    return context
+}
+
+export const useAuthActions = () => {
+    const context = useContext(UserActionsContext)
+    if(context === undefined) throw new Error("useAuthActions must be used within an AuthProvider")
+
+    return context
+}
+
+export const useAuth = () => {
+    const context = useContext(UserAuthContext)
+    if(context === undefined) throw new Error("useAuth must be used within an AuthProvider")
+
+    return context
+}
+
 export default function AuthProvider({ children }) {
-    const [user, actions] = useAuthReducer(reducer, defaultUser)
-    console.log(user)
-    const useAuth = () => useContext(UserStateContext)
+    const [user, actions, isLoading, error] = useAuthReducer(reducer, defaultUser)
+    const auth = [ isLoading, error ]
     
     // useEffect(() => {
     //     let isApiSubscribed = true
@@ -31,7 +51,7 @@ export default function AuthProvider({ children }) {
         // So we spread and wrap the values and functions in an object
         <UserStateContext.Provider value={user}>
             <UserActionsContext.Provider value={actions}>
-                <UserAuthContext.Provider value={useAuth}>
+                <UserAuthContext.Provider value={auth}>
                     {children}
                 </UserAuthContext.Provider>
             </UserActionsContext.Provider>
